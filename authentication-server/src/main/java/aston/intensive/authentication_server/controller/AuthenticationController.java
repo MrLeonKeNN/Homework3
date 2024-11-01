@@ -17,6 +17,6 @@ public class AuthenticationController {
     public final AuthenticationService authenticationService;
 
     public ResponseEntity<String> login(@RequestBody UserDto userDto){
-        return ResponseEntity.ok("dasdsa");
+        return ResponseEntity.ok("123");
     }
 }
