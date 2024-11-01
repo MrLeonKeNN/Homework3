@@ -70,6 +70,15 @@ services:
     ports:
       - "8092:8080"
 
+  config-service:
+    image: 'config-service:latest'
+    build:
+      context: config-service
+      dockerfile: Dockerfile
+    ports:
+      - "9999:8080"
+
+
 
   #  order-service:
   #    image: 'order-service:latest'

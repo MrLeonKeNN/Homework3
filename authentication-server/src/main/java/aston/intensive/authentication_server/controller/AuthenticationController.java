@@ -17,9 +17,6 @@ public class AuthenticationController {
     public final AuthenticationService authenticationService;
 
     public ResponseEntity<String> login(@RequestBody UserDto userDto){
-        Object o = new Object();
-        o.hashCode();
-        o.equals(o);
         return ResponseEntity.ok("123");
     }
 }
