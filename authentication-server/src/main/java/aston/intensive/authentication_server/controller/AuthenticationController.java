@@ -18,6 +18,7 @@ public class AuthenticationController {
 
     public ResponseEntity<String> login(@RequestBody UserDto userDto){
         Object o = new Object();
+        o.hashCode();
         return ResponseEntity.ok("123");
     }
 }
