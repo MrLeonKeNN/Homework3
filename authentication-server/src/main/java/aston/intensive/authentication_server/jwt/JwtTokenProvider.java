@@ -13,6 +13,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 
 @Component
@@ -21,15 +26,18 @@ public class JwtTokenProvider {
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
 
-    @Value("${secretKey}")
-    private String secretKey;
+    @Value("classpath:private.pem")
+    private String privateKey;
+
+    @Value("classpath:public.pem")
+    private String publicKey;
 
     public String generateToken(String name) {
 
         return Jwts.builder()
                 .subject(name)
                 .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + 3600000))
+                .expiration(new Date((new Date()).getTime() + 2592000))
                 .signWith(getSigningKey())
                 .compact();
     }
@@ -45,14 +53,32 @@ public class JwtTokenProvider {
     }
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = Decoders.BASE64.decode(privateKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private PublicKey getPublicKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(publicKey);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance("RSA");
+        } catch (NoSuchAlgorithmException e) {
+            // TODO: 01.11.2024 add logger error
+            throw new RuntimeException(e);
+        }
+        try {
+            return keyFactory.generatePublic(spec);
+        } catch (InvalidKeySpecException e) {
+            // TODO: 01.11.2024  add logger error
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser()
-                    .verifyWith(getSigningKey())
+                    .verifyWith(getPublicKey())
                     .build()
                     .parseSignedClaims(authToken);
             return true;

@@ -6,7 +6,7 @@ COPY src ./src
 RUN gradle clean build
 
 FROM openjdk:17-jdk
-ENV ARTIFACT_NAME=authentication-server-0.0.1-SNAPSHOT.jar
+ENV ARTIFACT_NAME=ticket-service-0.0.1-SNAPSHOT.jar
 WORKDIR /app
 COPY --from=BUILD /app/build/libs/$ARTIFACT_NAME .
 

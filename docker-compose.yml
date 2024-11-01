@@ -1,0 +1,118 @@
+services:
+  eureka-server:
+    image: 'eureka-server:latest'
+    build:
+      context: eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+
+  api-gateway:
+    image: 'api-gateway:latest'
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    depends_on:
+      - eureka-server
+    ports:
+      - "8090:8080"
+
+  ticket-service:
+    image: 'ticket-service:latest'
+    build:
+      context: ticket-service
+      dockerfile: Dockerfile
+    depends_on:
+      - ticket-service-db
+      - eureka-server
+    environment:
+      DATABASE_URL: jdbc:postgresql://host.docker.internal:5432/ticket-service
+      DATABASE_USERNAME: admin
+      DATABASE_PASSWORD: admin
+    ports:
+      - "8091:8080"
+
+  ticket-service-db:
+    image: 'postgres:alpine3.19'
+    container_name: ticket-service-db
+    environment:
+      POSTGRES_DB: ticket-service
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - ticket-service-volume:/var/lib/postgresql/data
+
+  authentication-server-db:
+    image: 'postgres:alpine3.19'
+    container_name: authentication-server-db
+    environment:
+      POSTGRES_DB: authentication-server
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+    volumes:
+      - authentication-server-volume:/var/lib/postgresql/data
+
+  authentication-server:
+    image: 'authentication-server:latest'
+    build:
+      context: authentication-server
+      dockerfile: Dockerfile
+    depends_on:
+      - eureka-server
+    environment:
+      DATABASE_URL: jdbc:postgresql://host.docker.internal:5433/authentication-server
+      DATABASE_USERNAME: admin
+      DATABASE_PASSWORD: admin
+    ports:
+      - "8092:8080"
+
+
+  #  order-service:
+  #    image: 'order-service:latest'
+  #    build:
+  #      context: order-service
+  #      dockerfile: Dockerfile
+  #    depends_on:
+  #      - order-service-db
+  #      - service-discovery
+  #      - api-gateway
+  #    environment:
+  #      DATABASE_URL: jdbc:postgresql://host.docker.internal:5433/order-service
+  #      DATABASE_USERNAME: admin
+  #      DATABASE_PASSWORD: admin
+  #    ports:
+  #      - "8092:8080"
+
+  #  order-service-db:
+  #    image: 'postgres:alpine3.19'
+  #    container_name: order-service-db
+  #    environment:
+  #      POSTGRES_DB: order-service
+  #      POSTGRES_USER: admin
+  #      POSTGRES_PASSWORD: admin
+  #    ports:
+  #      - "5433:5432"
+  #    volumes:
+  #      - order-service-volume:/var/lib/postgresql/data
+
+  #  payment-service:
+  #    image: 'payment-service:latest'
+  #    build:
+  #      context: payment-service
+  #      dockerfile: Dockerfile
+  #    depends_on:
+  #      - service-discovery
+  #      - api-gateway
+  #    ports:
+  #      - "8093:8080"
+
+
+volumes:
+  ticket-service-volume:
+    name: ticket-service-volume
+  authentication-server-volume:
+    name: authentication-server-volume
