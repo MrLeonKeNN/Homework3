@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.jsonschema2pojo' version '1.2.2' // Укажите актуальную версию
 }
 
 group = 'aston.intensive'
@@ -28,15 +29,43 @@ ext {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.jsonschema2pojo:jsonschema2pojo-core:1.2.2' // Укажите нужную версию
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.18.2'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 }
+
+jsonSchema2Pojo {
+	// Путь к директории с JSON-схемами
+	source = files("${sourceSets.main.output.resourcesDir}/schemas")
+
+//	source.setFrom("${project.buildD}/src/main/resources/schemas")
+
+	// Пакет для сгенерированных классов
+	targetPackage = 'aston.intensive.ticketservice.kafka.pojo'
+
+	// Включение JSR-303 аннотаций (например, @NotNull, @Size)
+	includeJsr303Annotations = true
+
+	generateBuilders = true
+
+	useInnerClassBuilders = true
+	// Другие настройки, если нужно:
+	// форматировать код с отступами
+	useDoubleNumbers = true
+	usePrimitives = true
+}
+
 
 dependencyManagement {
 	imports {

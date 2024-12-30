@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "clientID": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "paymentID": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "clientID",
+    "paymentID",
+    "status"
+  ]
+}

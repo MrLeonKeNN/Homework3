@@ -1,5 +1,6 @@
 package aston.intensive.authentication_server.model;
 
+import aston.intensive.authentication_server.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

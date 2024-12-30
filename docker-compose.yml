@@ -45,7 +45,7 @@ services:
       - ticket-service-volume:/var/lib/postgresql/data
 
   authentication-server-db:
-    image: 'postgres:alpine3.19'
+    image: 'postgres:latest'
     container_name: authentication-server-db
     environment:
       POSTGRES_DB: authentication-server
@@ -96,17 +96,17 @@ services:
   #    ports:
   #      - "8092:8080"
 
-  #  order-service-db:
-  #    image: 'postgres:alpine3.19'
-  #    container_name: order-service-db
-  #    environment:
-  #      POSTGRES_DB: order-service
-  #      POSTGRES_USER: admin
-  #      POSTGRES_PASSWORD: admin
-  #    ports:
-  #      - "5433:5432"
-  #    volumes:
-  #      - order-service-volume:/var/lib/postgresql/data
+#    order-service-db:
+#      image: 'postgres:alpine3.19'
+#      container_name: order-service-db
+#      environment:
+#        POSTGRES_DB: order-service
+#        POSTGRES_USER: admin
+#        POSTGRES_PASSWORD: admin
+#      ports:
+#        - "5433:5432"
+#      volumes:
+#        - order-service-volume:/var/lib/postgresql/data
 
   #  payment-service:
   #    image: 'payment-service:latest'
