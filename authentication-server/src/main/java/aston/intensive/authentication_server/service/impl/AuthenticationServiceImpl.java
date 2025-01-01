@@ -24,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow(() -> new AuthenticationException("Invalid login or password"));
 
         if (passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
-            return tokenProvider.generateToken(user.getLogin());
+            return tokenProvider.generateToken(user.getLogin(), user.getRoles());
         }
 
         throw new AuthenticationException("Invalid login or password");

@@ -1,4 +1,18 @@
 services:
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=root
+    volumes:
+      - ./vault-config:/vault/config
+      - vault-data:/vault/file
+    restart: unless-stopped
+
   eureka-server:
     image: 'eureka-server:latest'
     build:
@@ -125,3 +139,5 @@ volumes:
     name: ticket-service-volume
   authentication-server-volume:
     name: authentication-server-volume
+  vault-data:
+    driver: local
