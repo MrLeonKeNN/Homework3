@@ -1,0 +1,30 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/test
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  application:
+    name: authentication-server
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://host.docker.internal:5433/authentication-server}
+    username: ${DATABASE_USERNAME:admin}
+    password: ${DATABASE_PASSWORD:admin}
+    driver-class-name: org.postgresql.Driver
+  config:
+    import: configserver:http://localhost:8888
+jwt:
+  auth:
+    converter:
+      resource-id: test-rest-api
+      principle-attribute: preferred_username
+
+server:
+  port: 8092
+
+
+
+
+# Если у вас есть другие настройки, такие как ключи или секреты, вы можете добавить их здесь
+secretKey: "47020357239057290354234"

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AuthenticationServiceImpl implements AuthenticationService {
+public final class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider tokenProvider;

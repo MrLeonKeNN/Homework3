@@ -1,17 +1,40 @@
 services:
-  vault:
-    image: hashicorp/vault:latest
-    container_name: vault
-    cap_add:
-      - IPC_LOCK
-    ports:
-      - "8200:8200"
+  keycloak:
+    image: keycloak/keycloak:latest
+    container_name: keycloak
+    depends_on:
+      - keycloak-postgres
     environment:
-      - VAULT_DEV_ROOT_TOKEN_ID=root
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://host.docker.internal:5440/keycloak-postgres
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+
+      KC_LOG_LEVEL: info
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8095:8080"
+    command: "start-dev"
+
+  keycloak-postgres:
+    image: 'postgres:latest'
+    container_name: keycloak-postgres
+    environment:
+      POSTGRES_DB: keycloak-postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5440:5432"
     volumes:
-      - ./vault-config:/vault/config
-      - vault-data:/vault/file
-    restart: unless-stopped
+      - keycloak-postgres-volume:/var/lib/postgresql/data
 
   eureka-server:
     image: 'eureka-server:latest'
@@ -37,7 +60,6 @@ services:
       context: ticket-service
       dockerfile: Dockerfile
     depends_on:
-      - ticket-service-db
       - eureka-server
     environment:
       DATABASE_URL: jdbc:postgresql://host.docker.internal:5432/ticket-service
@@ -46,29 +68,41 @@ services:
     ports:
       - "8091:8080"
 
-  ticket-service-db:
-    image: 'postgres:alpine3.19'
-    container_name: ticket-service-db
+  postgres-service-db:
+    image: 'postgres:latest'
+    container_name: postgres-service-db
     environment:
-      POSTGRES_DB: ticket-service
+      POSTGRES_DB: postgres-service
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
     volumes:
-      - ticket-service-volume:/var/lib/postgresql/data
+      - postgres-service-volume:/var/lib/postgresql/data
 
-  authentication-server-db:
-    image: 'postgres:latest'
-    container_name: authentication-server-db
-    environment:
-      POSTGRES_DB: authentication-server
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-    ports:
-      - "5433:5432"
-    volumes:
-      - authentication-server-volume:/var/lib/postgresql/data
+#  account-service-db:
+#    image: 'postgres:latest'
+#    container_name: account-service-db
+#    environment:
+#      POSTGRES_DB: account-service
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - account-service-volume:/var/lib/postgresql/data
+
+#  authentication-server-db:
+#    image: 'postgres:latest'
+#    container_name: authentication-server-db
+#    environment:
+#      POSTGRES_DB: authentication-server
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#    ports:
+#      - "5433:5432"
+#    volumes:
+#      - authentication-server-volume:/var/lib/postgresql/data
 
   authentication-server:
     image: 'authentication-server:latest'
@@ -133,11 +167,29 @@ services:
   #    ports:
   #      - "8093:8080"
 
+#  vault:
+#    image: hashicorp/vault:latest
+#    container_name: vault
+#    cap_add:
+#      - IPC_LOCK
+#    ports:
+#      - "8200:8200"
+#    environment:
+#      - VAULT_DEV_ROOT_TOKEN_ID=root
+#    volumes:
+#      - ./vault-config:/vault/config
+#      - vault-data:/vault/file
+#    restart: unless-stopped
+
 
 volumes:
-  ticket-service-volume:
-    name: ticket-service-volume
+  postgres-service-volume:
+    name: postgres-service-volume
   authentication-server-volume:
     name: authentication-server-volume
+  account-service-volume:
+    name: account-service-volume
+  keycloak-postgres-volume:
+    name: keycloak-postgres-volume
   vault-data:
     driver: local

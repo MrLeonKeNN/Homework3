@@ -1,0 +1,100 @@
+package com.aston.payment_service.entity;
+
+import com.aston.payment_service.entity.enums.Currency;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.proxy.HibernateProxy;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Objects;
+import java.util.UUID;
+
+@Entity
+@Getter
+@Setter
+@ToString
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
+public class AutoPayments {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false)
+    private UUID id;
+
+    @Column(name = "client_id", nullable = false)
+    private UUID clientId;
+
+    @Column(name = "service_id", nullable = false)
+    private UUID serviceId;
+
+    @Column(name = "sender_account_number", length = 20)
+    private String senderAccountNumber;
+
+    @Column(name = "sender_card_number", length = 16)
+    private String senderCardNumber;
+
+    private BigDecimal amount;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
+
+    @Column(name = "start_date", nullable = false)
+    private Instant startDate;
+
+    @Column(name = "end_date", nullable = false)
+    private Instant endDate;
+
+    private String periodicity;
+
+    @Column(name = "last_payment_date")
+    private String lastPaymentDate;
+
+    @Column(name = "next_payment_date")
+    private String nextPaymentDate;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
+
+    private String comment;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id", nullable = false)
+    private Payment payment;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer()
+                .getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
+                .getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        AutoPayments that = (AutoPayments) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
+                .getPersistentClass()
+                .hashCode() : getClass().hashCode();
+    }
+}

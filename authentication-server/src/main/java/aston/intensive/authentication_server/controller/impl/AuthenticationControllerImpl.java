@@ -1,4 +1,4 @@
-package aston.intensive.authentication_server.controller;
+package aston.intensive.authentication_server.controller.impl;
 
 import aston.intensive.authentication_server.jwt.JwtTokenProvider;
 import aston.intensive.authentication_server.service.api.AuthenticationService;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
-public class AuthenticationController {
+public class AuthenticationControllerImpl {
 
     private final AuthenticationService authenticationService;
     private final JwtTokenProvider jwtTokenProvider;
