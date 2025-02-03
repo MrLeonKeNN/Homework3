@@ -2,7 +2,12 @@ spring:
   application:
     name: account-service
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://host.docker.internal:5432/account-service}
+    url: ${DATABASE_URL:jdbc:postgresql://host.docker.internal:5432/postgres-service}
     username: ${DATABASE_USERNAME:admin}
     password: ${DATABASE_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
+    properties:
+      schema: account_service
+  liquibase:
+    enabled: true
+    default-schema: account_service

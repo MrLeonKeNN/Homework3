@@ -1,4 +1,5 @@
 --liquibase formatted sql
+--changeset user:create_schema
 
---changeset user:1
+CREATE SCHEMA IF NOT EXISTS account_service;
 

@@ -2,18 +2,19 @@ package com.example.account_service.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.envers.Audited;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @Builder
 @ToString
 @RequiredArgsConstructor
-@AllArgsConstructor 
+@AllArgsConstructor
 public class Account {
 
     @Id
@@ -55,9 +56,11 @@ public class Account {
     @Column(name = "status_name", length = 7)
     private String statusName;
 
+    @CreatedDate
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @LastModifiedDate
     @Column(name = "closed_at")
     private Instant closedAt;
 
