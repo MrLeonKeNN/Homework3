@@ -4,6 +4,7 @@ import com.aston.payment_service.entity.enums.Currency;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -17,10 +18,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.TimeZoneStorage;
+import org.hibernate.annotations.TimeZoneStorageType;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,6 +38,7 @@ import java.util.UUID;
 @ToString
 @Builder
 @RequiredArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 public class AutoPayments {
 
@@ -55,19 +64,23 @@ public class AutoPayments {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    @CreatedDate
     @Column(name = "start_date", nullable = false)
     private Instant startDate;
 
+    @LastModifiedDate
+    @TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
     @Column(name = "end_date", nullable = false)
     private Instant endDate;
 
     private String periodicity;
 
+    @LastModifiedDate
     @Column(name = "last_payment_date")
-    private String lastPaymentDate;
+    private ZonedDateTime lastPaymentDate;
 
     @Column(name = "next_payment_date")
-    private String nextPaymentDate;
+    private OffsetDateTime nextPaymentDate;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
@@ -77,6 +90,9 @@ public class AutoPayments {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
+
+    @Column(name = "measured_time_zone", nullable = false)
+    private String measuredTimeZone;
 
     @Override
     public final boolean equals(Object o) {

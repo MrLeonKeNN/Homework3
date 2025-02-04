@@ -1,17 +1,22 @@
 package com.aston.payment_service.dto.request;
 
 import com.aston.payment_service.entity.enums.Currency;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
-record AutoPaymentDtoRequest(
+/**
+ * DTO for {@link com.aston.payment_service.mapper.AutoPaymentDto}
+ */
+@Builder
+public record AutoPaymentDtoRequest(
 
         /**
          * A unique identifier for the auto payment.
          */
-        UUID autoPaymentID,
+        UUID clientId,
 
         /**
          * The currency in which the payment is made.
@@ -71,6 +76,8 @@ record AutoPaymentDtoRequest(
         /**
          * The name of the payment detail.
          */
-        String name
+        String name,
+
+        String measuredTimeZone
 ) {
 }

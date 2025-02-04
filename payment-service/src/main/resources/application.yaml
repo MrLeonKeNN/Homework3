@@ -1,3 +1,18 @@
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: admin
+    username: admin
+    url: jdbc:postgresql://localhost:5432/postgres-service
+
   application:
     name: payment-service
+  liquibase:
+    enabled: true
+    default-schema: payment_service
+    change-log: /db/changelog/db.changelog-master.yaml
+  jpa:
+    show-sql: true
+    open-in-view: false
+server:
+  port: 8081

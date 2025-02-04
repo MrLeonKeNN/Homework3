@@ -23,7 +23,25 @@ public class StarterValidImpl implements ConstraintValidator<StarterValidation, 
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return false;
+        // Если значение null – пусть @NotNull обработает это отдельно
+        if (value == null) {
+            return true;
+        }
+        boolean isValid = true;
+
+        if (validateAccountNumber) {
+            isValid = isValid && isValidateAccountNumber(value);
+        }
+        if (validateCardNumber) {
+            isValid = isValid && validateCardNumber(value);
+        }
+        if (validateName) {
+            isValid = isValid && validateName(value);
+        }
+        if (validateUrl) {
+            isValid = isValid && validateUrl(value);
+        }
+        return isValid;
     }
 
     private boolean isValidateAccountNumber(String value) {

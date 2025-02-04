@@ -1,9 +1,11 @@
 package com.aston.payment_service.entity;
 
+import com.aston.payment_service.entity.enums.Currency;
 import com.aston.payment_service.entity.enums.PaymentStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -17,10 +19,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Currency;
 import java.util.UUID;
 
 @Entity
@@ -28,6 +31,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Payment {
@@ -55,6 +59,7 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    @CreatedDate
     @Column(name = "start_date")
     private Instant startDate;
 

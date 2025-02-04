@@ -1,8 +1,13 @@
 package com.example.account_service.entity;
 
+import com.example.account_service.entity.enums.AccountStatus;
+import com.example.account_service.entity.enums.AccountType;
+import com.example.account_service.entity.enums.Currency;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -27,6 +32,7 @@ import java.util.UUID;
 @Builder
 @ToString
 @RequiredArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 public class Account {
 
@@ -44,8 +50,9 @@ public class Account {
     @Column(name = "account_number", length = 20)
     private String accountNumber;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type_account", length = 10)
-    private String typeAccount;
+    private AccountType typeAccount;
 
     @Column(name = "account_balance")
     private BigDecimal accountBalance;
@@ -53,8 +60,9 @@ public class Account {
     @Column(name = "hold_balance")
     private BigDecimal holdBalance;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_name", length = 7)
-    private String statusName;
+    private AccountStatus statusName;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -70,8 +78,9 @@ public class Account {
     @Column(name = "master_account")
     private Boolean masterAccount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "currency_name", length = 3)
-    private String currencyName;
+    private Currency currencyName;
 
     @Column(name = "name_account", length = 50)
     private String nameAccount;

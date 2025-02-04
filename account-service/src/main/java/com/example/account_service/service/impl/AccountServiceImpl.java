@@ -27,7 +27,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void createAccount(CreateAccountDtoRequest account) {
         Account account1 = accountMapper.toEntity(account);
-        System.out.println(account1);
         accountRepository.save(account1);
     }
 }
