@@ -48,8 +48,9 @@ public class AutoPayments {
     @Column(name = "client_id", nullable = false)
     private UUID clientId;
 
-    @Column(name = "service_id", nullable = false)
-    private UUID serviceId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(nullable = false, name = "service_id")
+    private ServiceEntity serviceId;
 
     @Column(name = "sender_account_number", length = 20)
     private String senderAccountNumber;

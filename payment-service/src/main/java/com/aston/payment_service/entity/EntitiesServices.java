@@ -33,7 +33,7 @@ public class EntitiesServices {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entity_id")
-    private Entities  entity;
+    private Entities entity;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "service_id")

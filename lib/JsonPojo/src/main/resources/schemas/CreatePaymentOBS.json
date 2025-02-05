@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "clientId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Идентификатор клиента."
+    },
+    "transactionDate": {
+      "existingJavaType" : "java.time.Instant",
+      "format": "date-time",
+      "description": "Дата выполнения платежа."
+    },
+    "senderAccountNumber": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "Счет отправителя (максимум 20 символов)."
+    },
+    "receiverAccountNumber": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "Счет получателя (максимум 20 символов)."
+    },
+    "entitiesKPP": {
+      "type": "string",
+      "pattern": "^[0-9]{9}$",
+      "description": "КПП организации (9 цифр)."
+    },
+    "entitiesOGRN": {
+      "type": "string",
+      "pattern": "^[0-9]{13}$",
+      "description": "ОГРН организации (13 цифр)."
+    },
+    "amount": {
+      "type": "string",
+      "existingJavaType": "java.math.BigDecimal",
+      "description": "Сумма платежа."
+    },
+    "currency": {
+      "type": "string",
+      "maxLength": 3,
+      "description": "Валюта (3 символа)."
+    },
+    "category": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Категория услуги (до 60 символов)."
+    },
+    "code": {
+      "type": "string",
+      "maxLength": 5,
+      "description": "Код услуги (до 5 символов)."
+    }
+  },
+  "required": [
+    "clientID",
+    "transactionDate",
+    "senderAccountNumber",
+    "receiverAccountNumber",
+    "entitiesKPP",
+    "entitiesOGRN",
+    "amount",
+    "currency",
+    "category",
+    "code"
+  ]
+}

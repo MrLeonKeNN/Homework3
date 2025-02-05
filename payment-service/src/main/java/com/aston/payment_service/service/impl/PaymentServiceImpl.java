@@ -2,20 +2,23 @@ package com.aston.payment_service.service.impl;
 
 import com.aston.payment_service.dto.response.AccountDtoResponse;
 import com.aston.payment_service.entity.AutoPayments;
-import com.aston.payment_service.entity.Outbox;
 import com.aston.payment_service.entity.Payment;
-import com.aston.payment_service.entity.enums.Aggregate;
+import com.aston.payment_service.mapper.OutboxMapper;
 import com.aston.payment_service.mapper.PaymentMapper;
 import com.aston.payment_service.repository.PaymentRepository;
 import com.aston.payment_service.service.api.PaymentService;
+import com.example.JsonPojo.kafka.pojo.CreatePaymentOBS;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.apache.kafka.common.errors.InvalidRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -23,7 +26,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentMapper paymentMapper;
     private final PaymentRepository paymentRepository;
-    private WebClient.Builder webClientBuilder;
+    private final OutboxMapper outboxMapper;
+    private final WebClient.Builder webClientBuilder;
+    private final ObjectMapper objectMapper;
 
 
     @Override
@@ -36,14 +41,10 @@ public class PaymentServiceImpl implements PaymentService {
                 .bodyToMono(AccountDtoResponse.class)
                 .block();
         validClientAccount(accountDtoResponse, autoPayments.getAmount());
-        return paymentRepository.save(paymentMapper.fromAutoPayment(autoPayments));
-    }
-
-    private void createOutbox() {
-//        Outbox outbox = Outbox.builder()
-//                .aggregate(Aggregate.PAYMENT)
-//                .s()
-//                .build();
+        Payment payment = paymentRepository.save(paymentMapper.fromAutoPayment(autoPayments));
+//        outboxMapper.createOutbox(payment.getId(), objectMapper.writeValueAsString());
+//        CreatePaymentOBS createPaymentOBS =
+        return payment;
     }
 
     private void validClientAccount(AccountDtoResponse accountDetails, BigDecimal amount) {
