@@ -12,6 +12,9 @@ spring:
     default-schema: payment_service
     change-log: /db/changelog/db.changelog-master.yaml
   jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 50
     show-sql: true
     open-in-view: false
 server:

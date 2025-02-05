@@ -11,17 +11,14 @@ import com.aston.payment_service.repository.AutoPaymentsRepository;
 import com.aston.payment_service.repository.FieldRepository;
 import com.aston.payment_service.service.api.AutoPaymentService;
 import com.aston.payment_service.service.api.PaymentService;
+import com.aston.payment_service.utils.CronUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DateTimeException;
-import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 @Service
 @AllArgsConstructor
@@ -36,14 +33,15 @@ public class AutoPaymentServiceImpl implements AutoPaymentService {
 
     private final AutoPaymentFieldRepository autoPaymentFieldRepository;
     private final PaymentService paymentService;
+    private final CronUtils cronUtils;
 
     @Override
     @Transactional()
     public SuccesDtoResponse createAutoPayment(AutoPaymentDtoRequest request) {
         AutoPayments saveAutoPayment = autoPaymentMapper.toEntity(request);
         paymentService.createPayment(saveAutoPayment);
-
         validTimezone(request.measuredTimeZone());
+        saveAutoPayment.setNextPaymentDate(cronUtils.parseCron(request.periodicity(), ZoneId.of(request.measuredTimeZone())));
 
         AutoPayments autoPayments = autoPaymentsRepository.save(saveAutoPayment);
         AutoPaymentField autoPaymentField = AutoPaymentField.builder()

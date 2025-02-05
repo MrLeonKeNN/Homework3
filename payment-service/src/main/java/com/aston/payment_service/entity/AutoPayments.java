@@ -77,10 +77,10 @@ public class AutoPayments {
 
     @LastModifiedDate
     @Column(name = "last_payment_date")
-    private ZonedDateTime lastPaymentDate;
+    private Instant lastPaymentDate;
 
     @Column(name = "next_payment_date")
-    private OffsetDateTime nextPaymentDate;
+    private Instant nextPaymentDate;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
