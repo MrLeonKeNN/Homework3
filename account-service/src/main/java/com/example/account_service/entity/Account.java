@@ -9,6 +9,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,9 +38,9 @@ import java.util.UUID;
 public class Account {
 
     @Id
-    @GeneratedValue
-    @Column(name = "account_id")
-    private UUID accountId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    private UUID id;
 
     @Column(name = "client_id")
     private UUID clientId;
@@ -95,7 +96,7 @@ public class Account {
                 .getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         Account account = (Account) o;
-        return getAccountId() != null && Objects.equals(getAccountId(), account.getAccountId());
+        return getId() != null && Objects.equals(getId(), account.getId());
     }
 
     @Override

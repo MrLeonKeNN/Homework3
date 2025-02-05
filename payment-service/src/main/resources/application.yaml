@@ -17,5 +17,16 @@ spring:
         default_batch_fetch_size: 50
     show-sql: true
     open-in-view: false
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 0
 server:
   port: 8081
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost

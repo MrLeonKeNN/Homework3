@@ -22,7 +22,7 @@ CREATE TABLE addresses
 CREATE TABLE auto_payment_field
 (
     id               UUID         NOT NULL,
-    field_id         BIGINT       NOT NULL,
+    field_id         UUID         NOT NULL,
     auto_payments_id UUID         NOT NULL,
     value            VARCHAR(255) NOT NULL,
     CONSTRAINT pk_autopaymentfield PRIMARY KEY (id)
@@ -31,9 +31,9 @@ CREATE TABLE auto_payment_field
 -- changeset ilyan:1738621864438-4
 CREATE TABLE auto_payments
 (
-    id                    UUID    NOT NULL,
-    client_id             UUID    NOT NULL,
-    service_id            UUID    NOT NULL,
+    id                    UUID                     NOT NULL,
+    client_id             UUID                     NOT NULL,
+    service_id            UUID                     NOT NULL,
     sender_account_number VARCHAR(20),
     sender_card_number    VARCHAR(16),
     amount                DECIMAL,
@@ -43,10 +43,10 @@ CREATE TABLE auto_payments
     periodicity           VARCHAR(255),
     last_payment_date     TIMESTAMP WITH TIME ZONE,
     next_payment_date     TIMESTAMP WITH TIME ZONE,
-    is_active             BOOLEAN NOT NULL,
+    is_active             BOOLEAN                  NOT NULL,
     comment               VARCHAR(255),
     payment_id            UUID,
-    measured_time_zone text check (now() at time zone measured_time_zone is not null),
+    measured_time_zone    text check (now() at time zone measured_time_zone is not null),
     CONSTRAINT pk_autopayments PRIMARY KEY (id)
 );
 
@@ -78,7 +78,7 @@ CREATE TABLE entities_services
 -- changeset ilyan:1738621864438-7
 CREATE TABLE field
 (
-    id          BIGINT NOT NULL,
+    id          UUID NOT NULL,
     name        VARCHAR(255),
     description VARCHAR(255),
     CONSTRAINT pk_field PRIMARY KEY (id),
@@ -107,7 +107,7 @@ CREATE TABLE payment
 CREATE TABLE payment_field
 (
     id         UUID NOT NULL,
-    field_id   BIGINT,
+    field_id   UUID,
     payment_id UUID,
     value      VARCHAR(255),
     CONSTRAINT pk_paymentfield PRIMARY KEY (id)
@@ -127,10 +127,33 @@ CREATE TABLE service_entity
 CREATE TABLE service_field
 (
     id         UUID NOT NULL,
-    field_id   BIGINT,
+    field_id   UUID,
     service_id UUID,
     CONSTRAINT pk_servicefield PRIMARY KEY (id)
 );
+
+-- changeset ilyan:1738621864438-23
+CREATE TABLE outbox
+(
+    id                 BIGINT  NOT NULL,
+    aggregate          VARCHAR(255) NOT NULL,
+    payload            VARCHAR(500) NOT NULL,
+    status             VARCHAR(255) NOT NULL,
+    aggregate_id       UUID,
+    created_date       TIMESTAMP WITH TIME ZONE NOT NULL,
+    last_modified_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    CONSTRAINT pk_outbox PRIMARY KEY (id)
+);
+
+-- changeset ilyan:1738621864438-24
+CREATE TABLE shedlock
+(
+    name       VARCHAR(64),
+    lock_until TIMESTAMP(3) NULL,
+    locked_at  TIMESTAMP(3) NULL,
+    locked_by  VARCHAR(255),
+    PRIMARY KEY (name)
+)
 
 -- changeset ilyan:1738621864438-12
 ALTER TABLE auto_payment_field

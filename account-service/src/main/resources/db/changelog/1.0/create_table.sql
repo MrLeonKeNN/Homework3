@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS account
 (
-    account_id      UUID PRIMARY KEY                  DEFAULT gen_random_uuid(),
+    id              UUID PRIMARY KEY         DEFAULT gen_random_uuid(),
     client_id       UUID                     NOT NULL,
     department_id   UUID                     NOT NULL,
     account_number  VARCHAR(20)              NOT NULL,

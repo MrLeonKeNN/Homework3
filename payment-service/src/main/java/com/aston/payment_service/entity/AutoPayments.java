@@ -27,8 +27,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -75,7 +73,6 @@ public class AutoPayments {
 
     private String periodicity;
 
-    @LastModifiedDate
     @Column(name = "last_payment_date")
     private Instant lastPaymentDate;
 

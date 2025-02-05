@@ -11,3 +11,13 @@ spring:
   liquibase:
     enabled: true
     default-schema: account_service
+  jpa:
+    show-sql: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost

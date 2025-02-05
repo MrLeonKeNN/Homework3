@@ -16,6 +16,7 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -27,9 +28,9 @@ import java.util.Objects;
 public class Field {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
-    private Long id;
+    private UUID id;
 
     private String name;
 

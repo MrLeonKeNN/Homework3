@@ -62,7 +62,7 @@ public class AutoPaymentServiceImpl implements AutoPaymentService {
             ZoneId.of(timezone);
         } catch (DateTimeException e) {
             log.error("Invalid timezone {}", timezone);
-            new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
