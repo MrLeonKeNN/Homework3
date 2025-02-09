@@ -3,7 +3,6 @@ package com.example.account_service.controller.impl;
 import com.example.account_service.controller.api.AccountController;
 import com.example.account_service.dto.request.CreateAccountDtoRequest;
 import com.example.account_service.dto.respons.AccountDtoResponse;
-import com.example.account_service.entity.Account;
 import com.example.account_service.service.api.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -30,20 +30,28 @@ public class Addresses {
     @Column(nullable = false)
     private UUID id;
 
+    @Column(name = "country", length = 30)
     private String country;
 
+    @Column(length = 60)
     private String region;
 
+    @Column(length = 60)
     private String city;
 
+    @Column(length = 60)
     private String street;
 
+    @Column(length = 4)
     private String house;
 
+    @Column(length = 3)
     private String building;
 
+    @Column(length = 4)
     private String office;
 
+    @Column(length = 10)
     private String postcode;
 
     @Override

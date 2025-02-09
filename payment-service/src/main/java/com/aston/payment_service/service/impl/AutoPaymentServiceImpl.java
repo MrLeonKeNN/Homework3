@@ -9,6 +9,7 @@ import com.aston.payment_service.mapper.FieldMapper;
 import com.aston.payment_service.repository.AutoPaymentFieldRepository;
 import com.aston.payment_service.repository.AutoPaymentsRepository;
 import com.aston.payment_service.repository.FieldRepository;
+import com.aston.payment_service.repository.ServiceEntityRepository;
 import com.aston.payment_service.service.api.AutoPaymentService;
 import com.aston.payment_service.service.api.PaymentService;
 import com.aston.payment_service.utils.CronUtils;
@@ -25,6 +26,8 @@ import java.time.ZoneId;
 @Slf4j
 public class AutoPaymentServiceImpl implements AutoPaymentService {
 
+    private final ServiceEntityRepository serviceEntityRepository;
+
     private final AutoPaymentsRepository autoPaymentsRepository;
     private final FieldRepository fieldRepository;
 
@@ -38,20 +41,20 @@ public class AutoPaymentServiceImpl implements AutoPaymentService {
     @Override
     @Transactional()
     public SuccesDtoResponse createAutoPayment(AutoPaymentDtoRequest request) {
-        AutoPayments saveAutoPayment = autoPaymentMapper.toEntity(request);
-        paymentService.createPayment(saveAutoPayment);
         validTimezone(request.measuredTimeZone());
+        AutoPayments saveAutoPayment = autoPaymentMapper.toEntity(request,
+                serviceEntityRepository.findById(request.serviceId()).orElseThrow(RuntimeException::new));
         saveAutoPayment.setNextPaymentDate(cronUtils.parseCron(request.periodicity(), ZoneId.of(request.measuredTimeZone())));
-
-        AutoPayments autoPayments = autoPaymentsRepository.save(saveAutoPayment);
         AutoPaymentField autoPaymentField = AutoPaymentField.builder()
-                .autoPayments(autoPayments)
+                .autoPayments(saveAutoPayment)
                 .value(request.value())
                 .field(fieldRepository.findByName(request.name())
                         .orElseGet(() -> fieldRepository.save(fieldMapper.fromDto(request))))
                 .build();
+        paymentService.createPayment(saveAutoPayment);
+
         autoPaymentFieldRepository.save(autoPaymentField);
-        log.info("Auto payment created successfully for user {}", autoPayments.getClientId());
+        log.info("Auto payment created successfully for user {}", saveAutoPayment.getClientId());
         return SuccesDtoResponse.builder()
                 .successMessage("Auto payment created successfully")
                 .build();

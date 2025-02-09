@@ -33,11 +33,11 @@ public class AutoPaymentField {
     @Column(nullable = false)
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "field_id", nullable = false)
     private Field field;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "auto_payments_id", nullable = false)
     private AutoPayments autoPayments;
 

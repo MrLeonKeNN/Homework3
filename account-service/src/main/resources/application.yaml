@@ -6,13 +6,26 @@ spring:
     username: ${DATABASE_USERNAME:admin}
     password: ${DATABASE_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      idle-timeout: 1000         # 10 минут в миллисекундах
+      max-lifetime: 1000        # 30 минут в миллисекундах
+      connection-timeout: 30000    # 30 секунд в миллисекундах
+      connection-test-query: "SELECT 1"
+      keepalive-time: 300000
+      leak-detection-threshold: 2000  # 2 секунды в миллис
     properties:
       schema: account_service
   liquibase:
     enabled: true
     default-schema: account_service
+    driver-class-name: org.postgresql.Driver
   jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 50
     show-sql: true
+    open-in-view: false
 eureka:
   client:
     service-url:
@@ -21,3 +34,15 @@ eureka:
     fetch-registry: true
   instance:
     hostname: localhost
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include:
+          - health
+          - metrics
+    web:
+      exposure:
+        include:
+          - health
+          - metrics

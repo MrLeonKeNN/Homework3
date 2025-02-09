@@ -44,14 +44,14 @@ public class Payment {
     @Column(name = "client_id")
     private UUID clientId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "service_id")
     private ServiceEntity service;
 
-    @Column(name = "sender_account_number")
+    @Column(name = "sender_account_number", length = 20)
     private String senderAccountNumber;
 
-    @Column(name = "sender_card_number")
+    @Column(name = "sender_card_number", length = 16)
     private String senderCardNumber;
 
     private BigDecimal amount;
@@ -68,5 +68,9 @@ public class Payment {
     private PaymentStatus status;
 
     private String comment;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "payment_id")
+    private AutoPayments autoPayments;
 
 }

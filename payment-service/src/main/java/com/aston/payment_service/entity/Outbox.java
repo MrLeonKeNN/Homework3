@@ -2,6 +2,8 @@ package com.aston.payment_service.entity;
 
 import com.aston.payment_service.entity.enums.Aggregate;
 import com.aston.payment_service.entity.enums.OutboxStatus;
+import com.example.JsonPojo.kafka.pojo.CreatePaymentOBS;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -16,7 +18,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -44,8 +48,8 @@ public class Outbox {
     @Enumerated(EnumType.STRING)
     private Aggregate aggregate;
 
-    @Column(name = "payload", length = 500)
-    private String payload;
+    @JdbcTypeCode(SqlTypes.JSON)
+    private CreatePaymentOBS payload;
 
     @Column(name = "aggregate_id")
     private UUID aggregateId;

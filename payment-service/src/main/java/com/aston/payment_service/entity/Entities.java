@@ -38,19 +38,25 @@ public class Entities {
     @OneToOne(cascade = CascadeType.ALL)
     private Addresses addresses;
 
+    @Column(length = 50)
     private String name;
 
-    @Column(name = "account_number")
+    @Column(name = "account_number", length = 20)
     private String accountNumber;
 
+    @Column(length = 9)
     private String kpp;
 
+    @Column(length = 13)
     private String ogrn;
 
+    @Column(length = 10)
     private String tin;
 
+    @Column(length = 3)
     private String currencies;
 
+    @Column(length = 10)
     private String status;
 
     @Override

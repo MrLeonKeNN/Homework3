@@ -4,17 +4,26 @@ spring:
     password: admin
     username: admin
     url: jdbc:postgresql://localhost:5432/postgres-service
-
+    hikari:
+      maximum-pool-size: 10
+      idle-timeout: 600000         # 10 минут в миллисекундах
+      max-lifetime: 1800000        # 30 минут в миллисекундах
+      connection-timeout: 30000    # 30 секунд в миллисекундах
+      connection-test-query: "SELECT 1"
+      keepalive-time: 300000
+      leak-detection-threshold: 2000  # 2 секунды в миллис
   application:
     name: payment-service
   liquibase:
     enabled: true
     default-schema: payment_service
     change-log: /db/changelog/db.changelog-master.yaml
+    driver-class-name: org.postgresql.Driver
   jpa:
     properties:
       hibernate:
         default_batch_fetch_size: 50
+        default_schema: payment_service
     show-sql: true
     open-in-view: false
   flyway:

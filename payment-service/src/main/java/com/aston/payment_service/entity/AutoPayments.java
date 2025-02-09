@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -48,9 +50,9 @@ public class AutoPayments {
     @Column(name = "client_id", nullable = false)
     private UUID clientId;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(nullable = false, name = "service_id")
-    private ServiceEntity serviceId;
+    private ServiceEntity service;
 
     @Column(name = "sender_account_number", length = 20)
     private String senderAccountNumber;
@@ -72,6 +74,7 @@ public class AutoPayments {
     @Column(name = "end_date", nullable = false)
     private Instant endDate;
 
+    @Column(length = 100)
     private String periodicity;
 
     @Column(name = "last_payment_date")
@@ -85,9 +88,8 @@ public class AutoPayments {
 
     private String comment;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_id", nullable = false)
-    private Payment payment;
+    @OneToMany(mappedBy = "autoPayments", cascade = CascadeType.MERGE)
+    private List<Payment> paymentList;
 
     @Column(name = "measured_time_zone", nullable = false)
     private String measuredTimeZone;
