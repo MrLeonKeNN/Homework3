@@ -1,7 +1,17 @@
 package com.aston.payment_service.repository;
 
 import com.aston.payment_service.entity.Outbox;
+import com.aston.payment_service.entity.enums.OutboxStatus;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface OutboxRepository extends JpaRepository<Outbox, Long> {
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("FROM Outbox o  WHERE o.status = :status")
+    List<Outbox> findWaitingOutbox(OutboxStatus status);
 }

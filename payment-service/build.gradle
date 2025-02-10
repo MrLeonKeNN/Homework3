@@ -38,10 +38,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:6.2.0'
 	implementation 'net.javacrumbs.shedlock:shedlock-spring:6.2.0'
-	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation 'com.example:JsonPojo:1.0'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 //	implementation 'com.vladmihalcea:hibernate-types-52:2.21.1'
 
 	compileOnly 'org.projectlombok:lombok'
