@@ -59,10 +59,9 @@ public class OutboxServiceImpl implements OutboxService {
             futures.add(future);
         }
 
-        // Дожидаемся завершения всех асинхронных задач
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .join();
 
-        // Теперь точно все статусы изменены, можно сохранять в БД
         outboxRepository.saveAllAndFlush(outboxList);
     }
 }

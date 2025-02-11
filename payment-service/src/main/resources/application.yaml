@@ -25,6 +25,7 @@ spring:
         default_batch_fetch_size: 50
         default_schema: payment_service
         order_updates: true
+        batch_versioned_data: true
     show-sql: true
     open-in-view: false
   kafka:
