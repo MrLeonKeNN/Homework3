@@ -1,7 +1,7 @@
 package com.aston.payment_service.service.impl;
 
 import com.aston.payment_service.dto.request.AutoPaymentDtoRequest;
-import com.aston.payment_service.dto.response.SuccesDtoResponse;
+import com.aston.payment_service.dto.response.SuccessDtoResponse;
 import com.aston.payment_service.entity.AutoPaymentField;
 import com.aston.payment_service.entity.AutoPayments;
 import com.aston.payment_service.mapper.AutoPaymentMapper;
@@ -40,7 +40,7 @@ public class AutoPaymentServiceImpl implements AutoPaymentService {
 
     @Override
     @Transactional()
-    public SuccesDtoResponse createAutoPayment(AutoPaymentDtoRequest request) {
+    public SuccessDtoResponse createAutoPayment(AutoPaymentDtoRequest request) {
         validTimezone(request.measuredTimeZone());
         AutoPayments saveAutoPayment = autoPaymentMapper.toEntity(request,
                 serviceEntityRepository.findById(request.serviceId()).orElseThrow(RuntimeException::new));
@@ -55,7 +55,7 @@ public class AutoPaymentServiceImpl implements AutoPaymentService {
 
         autoPaymentFieldRepository.save(autoPaymentField);
         log.info("Auto payment created successfully for user {}", saveAutoPayment.getClientId());
-        return SuccesDtoResponse.builder()
+        return SuccessDtoResponse.builder()
                 .successMessage("Auto payment created successfully")
                 .build();
     }

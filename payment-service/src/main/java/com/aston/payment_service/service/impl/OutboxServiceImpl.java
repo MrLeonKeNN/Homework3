@@ -62,6 +62,6 @@ public class OutboxServiceImpl implements OutboxService {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
                 .join();
 
-        outboxRepository.saveAllAndFlush(outboxList);
+        outboxRepository.saveAll(outboxList);
     }
 }

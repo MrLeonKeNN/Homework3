@@ -2,7 +2,7 @@ package com.aston.payment_service.controller.impl;
 
 import com.aston.payment_service.controller.api.AutoPaymentController;
 import com.aston.payment_service.dto.request.AutoPaymentDtoRequest;
-import com.aston.payment_service.dto.response.SuccesDtoResponse;
+import com.aston.payment_service.dto.response.SuccessDtoResponse;
 import com.aston.payment_service.service.api.AutoPaymentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class AutoPaymentControllerImpl implements AutoPaymentController {
     private WebClient.Builder webClientBuilder;
 
     @Override
-    public ResponseEntity<SuccesDtoResponse> createAutoPayment(AutoPaymentDtoRequest autoPaymentDtoRequest) {
+    public ResponseEntity<SuccessDtoResponse> createAutoPayment(AutoPaymentDtoRequest autoPaymentDtoRequest) {
         return ResponseEntity.ok(autoPaymentService.createAutoPayment(autoPaymentDtoRequest));
     }
 
