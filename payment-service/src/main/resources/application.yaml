@@ -22,10 +22,12 @@ spring:
   jpa:
     properties:
       hibernate:
-        default_batch_fetch_size: 50
-        default_schema: payment_service
-        order_updates: true
-        batch_versioned_data: true
+          jdbc:
+            batch_size: 50
+          default_batch_fetch_size: 50
+          default_schema: payment_service
+          order_updates: true
+          batch_versioned_data: true
     show-sql: true
     open-in-view: false
   kafka:
@@ -34,10 +36,8 @@ spring:
       acks: all
       retries: 3
       batch-size: 16KB
-
-
 server:
-  port: 8081
+  port: 8095
 eureka:
   client:
     service-url:

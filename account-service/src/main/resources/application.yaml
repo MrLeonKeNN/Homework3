@@ -46,3 +46,5 @@ management:
         include:
           - health
           - metrics
+server:
+  port: 8091

@@ -1,0 +1,19 @@
+spring:
+  r2dbc:
+    password: admin
+    username: admin
+    url: r2dbc:postgresql://localhost:5432/postgres-service
+    properties:
+      schema: card_service
+  liquibase:
+    enabled: true
+    default-schema: card_service
+    change-log: /db/changelog/db.changelog-master.yaml
+    user: ${SPRING_DATASOURCE_USERNAME:admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres-service}
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: card-service
+server:
+  port: 8093

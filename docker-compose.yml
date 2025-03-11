@@ -1,4 +1,5 @@
 services:
+
   keycloak:
     image: keycloak/keycloak:latest
     container_name: keycloak
@@ -132,36 +133,6 @@ services:
     ports:
       - "9999:8080"
 
-
-
-  #  order-service:
-  #    image: 'order-service:latest'
-  #    build:
-  #      context: order-service
-  #      dockerfile: Dockerfile
-  #    depends_on:
-  #      - order-service-db
-  #      - service-discovery
-  #      - api-gateway
-  #    environment:
-  #      DATABASE_URL: jdbc:postgresql://host.docker.internal:5433/order-service
-  #      DATABASE_USERNAME: admin
-  #      DATABASE_PASSWORD: admin
-  #    ports:
-  #      - "8092:8080"
-
-#    order-service-db:
-#      image: 'postgres:alpine3.19'
-#      container_name: order-service-db
-#      environment:
-#        POSTGRES_DB: order-service
-#        POSTGRES_USER: admin
-#        POSTGRES_PASSWORD: admin
-#      ports:
-#        - "5433:5432"
-#      volumes:
-#        - order-service-volume:/var/lib/postgresql/data
-
   #  payment-service:
   #    image: 'payment-service:latest'
   #    build:
@@ -200,6 +171,7 @@ services:
       retries: 5
     labels:
       amplicode.image: confluent/kafka
+
   kafkaui:
     image: provectuslabs/kafka-ui:latest
     restart: always
@@ -216,19 +188,60 @@ services:
       start_period: 60s
       retries: 5
 
-#  vault:
-#    image: hashicorp/vault:latest
-#    container_name: vault
-#    cap_add:
-#      - IPC_LOCK
-#    ports:
-#      - "8200:8200"
-#    environment:
-#      - VAULT_DEV_ROOT_TOKEN_ID=root
-#    volumes:
-#      - ./vault-config:/vault/config
-#      - vault-data:/vault/file
-#    restart: unless-stopped
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=root
+    volumes:
+      - ./vault-config:/vault/config
+      - vault-data:/vault/file
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.4.2
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: redis-cli ping
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+  prometheus:
+    image: prom/prometheus:latest
+    restart: "no"
+    command:
+      - "--web.enable-lifecycle"
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:9090/-/healthy
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+  grafana:
+    image: grafana/grafana:latest
+    restart: "no"
+    ports:
+      - "3000:3000"
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    healthcheck:
+      test: curl --fail -s http://localhost:3000/api/health || exit 1
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
 
 
 volumes:

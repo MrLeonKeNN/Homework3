@@ -30,6 +30,22 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/card-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/card-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/client-credit-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/client-credit-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/config-service" />
         <option name="gradleJvm" value="corretto-17" />
         <option name="modules">
@@ -77,6 +93,14 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/ticket-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/transfer-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/transfer-service" />
           </set>
         </option>
       </GradleProjectSettings>

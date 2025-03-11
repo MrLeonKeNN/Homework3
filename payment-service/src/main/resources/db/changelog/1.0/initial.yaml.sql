@@ -38,7 +38,7 @@ CREATE TABLE auto_payments
     sender_card_number    VARCHAR(16),
     amount                DECIMAL,
     currency              VARCHAR(255),
-    start_date            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+        start_date            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     end_date              TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     periodicity           VARCHAR(100),
     last_payment_date     TIMESTAMP WITHOUT TIME ZONE,

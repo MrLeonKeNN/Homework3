@@ -1,20 +1,13 @@
 package com.aston.payment_service.repository;
 
-import com.aston.payment_service.config.EmbeddedPostgresConfiguration;
-import com.aston.payment_service.config.EmbeddedPostgresWithLiquibaseConfiguration;
-import com.aston.payment_service.config.TestContainersInitializer;
 import com.aston.payment_service.entity.Outbox;
 import com.aston.payment_service.entity.enums.Aggregate;
 import com.aston.payment_service.entity.enums.OutboxStatus;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;

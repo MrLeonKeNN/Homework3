@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
         validClientAccount(accountDtoResponse, autoPayments.getAmount());
 
         Entities entities = entitiesRepository.findByClientId(autoPayments.getClientId())
-                .orElseThrow(NullPointerException::new);
+                .orElseThrow(RuntimeException::new);
         Payment payment = paymentRepository.save(paymentMapper.fromAutoPayment(autoPayments));
         ServiceEntity serviceEntity = serviceEntityRepository.findById(autoPayments.getService()
                         .getId())

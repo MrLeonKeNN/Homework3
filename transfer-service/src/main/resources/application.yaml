@@ -1,0 +1,27 @@
+spring:
+  r2dbc:
+    password: admin
+    username: admin
+    url: r2dbc:postgresql://localhost:5432/postgres-service
+    properties:
+      schema: transfer_service
+  liquibase:
+    enabled: true
+    default-schema: transfer_service
+    change-log: /db/changelog/db.changelog-master.yaml
+    user: ${SPRING_DATASOURCE_USERNAME:admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres-service}
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: transfer-service
+server:
+  port: 8096
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost

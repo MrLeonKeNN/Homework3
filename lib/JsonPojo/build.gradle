@@ -1,0 +1,60 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'maven-publish'
+	id 'org.jsonschema2pojo' version '1.2.2'
+}
+
+bootJar {
+	enabled = false
+}
+jar {
+	enabled = true
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+	repositories {
+		mavenLocal()
+	}
+}
+
+group = 'com.example'
+version = '1.0'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+jsonSchema2Pojo {
+	source = files("${projectDir}/src/main/resources/schemas")
+	includeJsr303Annotations = true
+	targetPackage = "com.example.JsonPojo.kafka.pojo"
+	useJakartaValidation = true
+	generateBuilders = true
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

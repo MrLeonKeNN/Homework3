@@ -1,5 +1,26 @@
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:tc:postgresql:15.3:///test-db
+    username: test
+    password: test
   liquibase:
     enabled: true
     change-log: db/changelog/db.changelog-master.yaml
     driver-class-name: org.postgresql.Driver
+    default-schema: public
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        default_batch_fetch_size: 50
+        default_schema: public
+        order_updates: true
+        batch_versioned_data: true
+eureka:
+  client:
+    enabled: false   # Полностью отключает клиента Eureka
+    register-with-eureka: false  # Отключает регистрацию в Eureka
+    fetch-registry: false  # Отключает запросы к Eureka
