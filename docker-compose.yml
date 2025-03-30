@@ -1,5 +1,31 @@
 services:
 
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-server
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - jenkins-network
+
+  jenkins-agent:
+    image: jenkins/inbound-agent
+    container_name: jenkins-agent
+    environment:
+      - JENKINS_URL=http://jenkins-server:8080
+      - JENKINS_AGENT_NAME=agent
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
+    volumes:
+      - agent_workdir:/home/jenkins/agent
+    depends_on:
+      - jenkins
+    networks:
+      - jenkins-network
+
+
   keycloak:
     image: keycloak/keycloak:latest
     container_name: keycloak
@@ -255,4 +281,11 @@ volumes:
     name: keycloak-postgres-volume
   vault-data:
     driver: local
+  jenkins_home:
+  agent_workdir:
   kafka_data:
+
+networks:
+  jenkins-network:
+  cicd_network:
+    driver: bridge
