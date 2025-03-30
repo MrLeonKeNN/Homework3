@@ -41,7 +41,7 @@ dependencies {
 	implementation 'net.javacrumbs.shedlock:shedlock-spring:6.2.0'
 	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	implementation 'com.example:JsonPojo:1.0'
+	implementation project(':lib:JsonPojo')
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
