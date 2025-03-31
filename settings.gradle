@@ -1,3 +1,0 @@
-rootProject.name = 'Homework3'
-include 'payment-service'
-include 'lib:JsonPojo'
