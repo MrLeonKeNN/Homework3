@@ -22,8 +22,15 @@ configurations {
 }
 
 repositories {
+	maven {
+		url "http://localhost:8081/repository/my-releases/"
+		credentials {
+			username = "admin"
+			password = "2422439"
+		}
+		allowInsecureProtocol = true // Разрешаем HTTP
+	}
 	mavenCentral()
-	mavenLocal()
 }
 
 ext {
