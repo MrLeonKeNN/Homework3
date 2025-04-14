@@ -16,9 +16,25 @@ spec:
     spec:
       containers:
         - name: payment-service
-          image: leonkenn/payment-service  # Для Docker Hub
+          image: leonkenn/payment-service:latest
           ports:
-            - containerPort: 8080  # Поменяй на порт твоего сервиса
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: payment-service-config
+                  key: DB_URL
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: payment-service-secret
+                  key: DB_USERNAME
+            - name:  DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: payment-service-secret
+                  key: DB_PASSWORD
 ---
 apiVersion: v1
 kind: Service

@@ -15,7 +15,9 @@ import com.aston.payment_service.service.api.PaymentService;
 import com.aston.payment_service.utils.CronUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DateTimeException;
@@ -39,7 +41,7 @@ public class AutoPaymentServiceImpl implements AutoPaymentService {
     private final CronUtils cronUtils;
 
     @Override
-    @Transactional()
+    @Transactional
     public SuccessDtoResponse createAutoPayment(AutoPaymentDtoRequest request) {
         validTimezone(request.measuredTimeZone());
         AutoPayments saveAutoPayment = autoPaymentMapper.toEntity(request,
