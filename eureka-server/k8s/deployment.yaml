@@ -2,16 +2,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: eureka-server-deployment
-  namespace: client-side
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eureka-server-client-side
+      app: eureka-server
   template:
     metadata:
       labels:
-        app: eureka-server-client-side
+        app: eureka-server
     spec:
       containers:
         - name: eureka-server
